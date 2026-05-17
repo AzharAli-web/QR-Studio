@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+/* Tailwind v4: enable dark: variants via class strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Tailwind v4 uses CSS-first theming; we keep small, intentional globals here. */
+
+:root {
+  --background: #05050a;
+  --foreground: #f6f7fb;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  color: var(--foreground);
+  background: var(--background);
+  transition: background-color 250ms ease, color 250ms ease;
+}
+
+.app-grain {
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  opacity: 0.03;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
+
+
+.app-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  background:
+    radial-gradient(1100px circle at 15% 10%, rgba(99, 102, 241, 0.35), transparent 55%),
+    radial-gradient(900px circle at 85% 15%, rgba(236, 72, 153, 0.28), transparent 55%),
+    radial-gradient(900px circle at 50% 90%, rgba(34, 211, 238, 0.22), transparent 55%),
+    linear-gradient(180deg, rgba(2, 6, 23, 1) 0%, rgba(9, 9, 11, 1) 55%, rgba(2, 6, 23, 1) 100%);
+  filter: saturate(1.1);
+}
+
+.app-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.04));
+  background-size: 200% 200%;
+  animation: gradient-pan 16s ease-in-out infinite;
+  opacity: 0.9;
+}
+
+@keyframes gradient-pan {
+  0% {
+    background-position: 0% 30%;
+  }
+
+  50% {
+    background-position: 100% 70%;
+  }
+
+  100% {
+    background-position: 0% 30%;
+  }
+}
+
+@keyframes blob-fade-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(calc(var(--base-scale, 1) * 0.9));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(var(--base-scale, 1));
+  }
+}
+
+@keyframes float-blob {
+  0% {
+    transform: translate3d(0, 0, 0) scale(var(--base-scale, 1));
+  }
+
+  33% {
+    transform: translate3d(18px, -14px, 0) scale(calc(var(--base-scale, 1) * 1.04));
+  }
+
+  66% {
+    transform: translate3d(-10px, 16px, 0) scale(calc(var(--base-scale, 1) * 0.98));
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) scale(var(--base-scale, 1));
+  }
+}
+
+.floating-blob {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation:
+    blob-fade-in 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    float-blob var(--blob-duration, 18s) ease-in-out var(--blob-delay, 0s) infinite;
+}
+
+html:not(.dark) {
+  --background: #fbfbfe;
+  --foreground: #0a0a10;
+}
+
+html:not(.dark) .app-gradient {
+  background:
+    radial-gradient(1100px circle at 15% 10%, rgba(99, 102, 241, 0.12), transparent 55%),
+    radial-gradient(900px circle at 85% 15%, rgba(236, 72, 153, 0.10), transparent 55%),
+    radial-gradient(900px circle at 50% 90%, rgba(34, 211, 238, 0.08), transparent 55%),
+    linear-gradient(180deg, #f3f4f6 0%, #f9fafb 55%, #f3f4f6 100%);
+  filter: none;
+}
+
+.scanner-laser {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  top: 12%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(99, 102, 241, 0.9),
+      rgba(34, 211, 238, 0.9),
+      rgba(236, 72, 153, 0.9),
+      transparent);
+  filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.45));
+  opacity: 0.95;
+  animation: scanner-laser-move 1.8s ease-in-out infinite;
+}
+
+@keyframes scanner-laser-move {
+  0% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(calc(76%));
+    opacity: 0.95;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(calc(76%));
+    opacity: 0.4;
+  }
+}
